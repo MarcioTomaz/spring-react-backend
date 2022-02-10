@@ -2,9 +2,9 @@ package com.reactSpring.minhasFinancas.model.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.datatype.jsr310.deser.JSR310DateTimeDeserializerBase;
+import com.reactSpring.minhasFinancas.model.enums.StatusLancamento;
+import com.reactSpring.minhasFinancas.model.enums.TipoLancamento;
 import lombok.*;
-import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
 import javax.persistence.*;
 import java.math.BigDecimal;

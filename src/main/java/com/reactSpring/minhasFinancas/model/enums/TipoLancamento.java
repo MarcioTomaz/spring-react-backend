@@ -1,4 +1,4 @@
-package com.reactSpring.minhasFinancas.model.entity;
+package com.reactSpring.minhasFinancas.model.enums;
 
 public enum TipoLancamento {
 
