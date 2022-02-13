@@ -2,6 +2,8 @@ package com.reactSpring.minhasFinancas.model.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.reactSpring.minhasFinancas.api.dto.LancamentoDTO;
+import com.reactSpring.minhasFinancas.api.dto.UsuarioAutenticarDTO;
 import com.reactSpring.minhasFinancas.model.enums.StatusLancamento;
 import com.reactSpring.minhasFinancas.model.enums.TipoLancamento;
 import lombok.*;
@@ -14,10 +16,10 @@ import java.time.LocalDate;
 @Setter
 @EqualsAndHashCode
 @ToString
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table( name = "lancamento")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Lancamento {
 
     @Id
@@ -43,7 +45,7 @@ public class Lancamento {
 
     @Column( name = "data_cadastro")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-    private LocalDate dataCadastro;
+    private LocalDate dataCadastro = LocalDate.now();
 
     @Column( name = "tipo_lancamento")
     @Enumerated( value = EnumType.STRING )
@@ -52,4 +54,5 @@ public class Lancamento {
     @Column( name = "status")
     @Enumerated( value = EnumType.STRING )
     private StatusLancamento status;
+
 }

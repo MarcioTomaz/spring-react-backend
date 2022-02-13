@@ -3,6 +3,7 @@ package com.reactSpring.minhasFinancas.service.serviceImpl;
 import com.reactSpring.minhasFinancas.exception.RegraNegocioException;
 import com.reactSpring.minhasFinancas.model.entity.Lancamento;
 import com.reactSpring.minhasFinancas.model.enums.StatusLancamento;
+import com.reactSpring.minhasFinancas.model.enums.TipoLancamento;
 import com.reactSpring.minhasFinancas.model.repository.LancamentoRepository;
 import com.reactSpring.minhasFinancas.service.LancamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class LancamentoServiceImpl implements LancamentoService {
@@ -66,6 +68,7 @@ public class LancamentoServiceImpl implements LancamentoService {
 
     @Override
     public void validar(Lancamento lancamento) {
+
         if(lancamento.getDescricao() == null || lancamento.getDescricao().trim().equals("") ){
 
             throw new RegraNegocioException("Informe uma descrição válida.");
@@ -84,12 +87,34 @@ public class LancamentoServiceImpl implements LancamentoService {
         }
 
         if(lancamento.getValor() == null || lancamento.getValor().compareTo(BigDecimal.ZERO) < 1 ){
-            throw new RegraNegocioException("Informe um valor válido");
+            throw new RegraNegocioException("Informe um valor válido.");
         }
 
         if (lancamento.getTipo() == null) {
-            throw new RegraNegocioException("informe um tipo");
-
+            throw new RegraNegocioException("informe um tipo de lançamento.");
         }
+    }
+
+    @Override
+    public Optional<Lancamento> obterPorId(Long id) {
+        return repository.findById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public BigDecimal obterSaldoPorTipoLancamentoEUsuario(Long id) {
+
+        BigDecimal receitas = repository.obterSaldoPorTipoLancamentoEUsuario(id, TipoLancamento.RECEITA);
+        BigDecimal despesas = repository.obterSaldoPorTipoLancamentoEUsuario(id, TipoLancamento.DESPESA);
+
+        if(receitas == null){
+            receitas = BigDecimal.ZERO;
+        }
+
+        if( despesas == null){
+            despesas = BigDecimal.ZERO;
+        }
+
+        return receitas.subtract(despesas);
     }
 }

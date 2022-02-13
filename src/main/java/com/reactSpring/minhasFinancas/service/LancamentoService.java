@@ -2,8 +2,11 @@ package com.reactSpring.minhasFinancas.service;
 
 import com.reactSpring.minhasFinancas.model.entity.Lancamento;
 import com.reactSpring.minhasFinancas.model.enums.StatusLancamento;
+import org.springframework.data.repository.query.Param;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 public interface LancamentoService {
 
@@ -18,4 +21,8 @@ public interface LancamentoService {
     void atualizarStatus(Lancamento lancamento, StatusLancamento status);
 
     void validar( Lancamento lancamento );
+
+    Optional<Lancamento> obterPorId(Long id);
+
+    BigDecimal obterSaldoPorTipoLancamentoEUsuario(Long id);
 }
