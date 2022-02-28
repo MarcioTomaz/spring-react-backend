@@ -59,7 +59,7 @@ public class UsuarioController {
         Optional<Usuario> usuario = service.obterPorId(id);
 
         if ( !usuario.isPresent() ) {
-            return new ResponseEntity(HttpStatus.I_AM_A_TEAPOT);
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
 
         BigDecimal saldo = lancamentoService.obterSaldoPorTipoLancamentoEUsuario(id);

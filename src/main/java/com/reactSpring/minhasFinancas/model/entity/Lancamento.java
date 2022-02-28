@@ -47,12 +47,12 @@ public class Lancamento {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate dataCadastro = LocalDate.now();
 
-    @Column( name = "tipo_lancamento")
+    @Column( name = "tipo")
     @Enumerated( value = EnumType.STRING )
     private TipoLancamento tipo;
 
     @Column( name = "status")
     @Enumerated( value = EnumType.STRING )
-    private StatusLancamento status;
+    private StatusLancamento status = StatusLancamento.PENDENTE;
 
 }
