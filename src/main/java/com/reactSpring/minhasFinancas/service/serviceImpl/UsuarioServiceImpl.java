@@ -6,6 +6,7 @@ import com.reactSpring.minhasFinancas.model.entity.Usuario;
 import com.reactSpring.minhasFinancas.model.repository.UsuarioRepository;
 import com.reactSpring.minhasFinancas.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,9 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Autowired
     private UsuarioRepository repository;
 
+    @Autowired
+    private PasswordEncoder encoder;
+
     @Override
     public Usuario autenticar(String email, String senha) {
 
@@ -26,7 +30,9 @@ public class UsuarioServiceImpl implements UsuarioService {
             throw new ErroAutenticacao(" Usuário não encontrado para o email informado. ");
         }
 
-        if(!usuario.get().getSenha().equals(senha)){
+        boolean senhasBatem = encoder.matches(senha, usuario.get().getSenha());
+
+        if(!senhasBatem){
             throw new ErroAutenticacao(" Senha inválida. ");
         }
 
@@ -39,7 +45,16 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         validarEmail(usuario.getEmail());
 
+        criptografarSenha(usuario);
+
         return repository.save(usuario);
+    }
+
+    private void criptografarSenha(Usuario usuario){
+        String senha = usuario.getSenha();
+        String senhaCripto = encoder.encode(senha);
+
+        usuario.setSenha(senhaCripto);
     }
 
     @Override
